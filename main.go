@@ -45,7 +45,7 @@ func main() {
 	defer natsClient.Close()
 
 	//Get localIp
-	ipList, err := helpers.LocalsIP()
+	ipList, err := helpers.LocalsIP(c.IpRegexp)
 
 	if err != nil {
 		fmt.Print("Unable to get any local IP")

@@ -80,5 +80,15 @@ port: 8080
 
 		})
 
+		It("set ip regexp", func() {
+			var b = []byte(`
+ip_regexp: "^(1|0)27\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$"
+`)
+
+			config.Initialize(b)
+			Ω(config.IpRegexp).To(Equal("^(1|0)27\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$"))
+
+		})
+
 	})
 })

@@ -20,6 +20,7 @@ type Config struct {
 	RegisterInterval int          `yaml:"register_message_interval"`
 	GoMaxProcs       int          `yaml:"max_go_procs"`
 	Port             uint16       `yaml:"port"`
+	IpRegexp         string       `yaml:"ip_regexp"`
 }
 
 // Multiple url are possible
@@ -45,6 +46,7 @@ var defaultConfig = Config{
 	RegisterInterval: 5,
 	GoMaxProcs:       0,
 	Port:             80,
+	IpRegexp:         "^(1|0)27\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$",
 }
 
 func (c *Config) Initialize(configYAML []byte) error {
