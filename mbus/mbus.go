@@ -3,11 +3,9 @@ package mbus
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/apcera/nats"
 	"github.com/cloudfoundry/yagnats"
 	uuid "github.com/nu7hatch/gouuid"
 	"github.com/shinji62/gregistrar/config"
-	"net/url"
 )
 
 const (
@@ -22,22 +20,25 @@ type RegisterMessage struct {
 	Uris []string `json:"uris"`
 }
 
-func NewMessageBusConnection(c *config.Config) (yagnats.NATSConn, error) {
-
-	NatsServer := make([]string, 0)
-
+func NewMessageBusConnection(c *config.Config) (yagnats.NATSClient, error) {
+	natsClient := yagnats.NewClient()
+	NatsServer := []yagnats.ConnectionProvider{}
 	for _, info := range c.Nats {
-		uri := url.URL{
-			Scheme: "nats",
-			User:   url.UserPassword(info.User, info.Pass),
-			Host:   fmt.Sprintf("%s:%d", info.Host, info.Port),
-		}
-		NatsServer = append(NatsServer, uri.String())
+		NatsServer = append(NatsServer, &yagnats.ConnectionInfo{
+			Addr:     fmt.Sprintf("%s:%d", info.Host, info.Port),
+			Username: info.User,
+			Password: info.Pass,
+		})
 	}
-	return yagnats.Connect(NatsServer)
+	err := natsClient.Connect(&yagnats.ConnectionCluster{
+		Members: NatsServer,
+	})
+
+	return natsClient, err
+
 }
 
-func SendRegisterMessage(natsClient yagnats.NATSConn, msgList []RegisterMessage) error {
+func SendRegisterMessage(natsClient yagnats.NATSClient, msgList []RegisterMessage) error {
 
 	for _, payload := range msgList {
 		encodeMessage, err := json.Marshal(payload)
@@ -57,26 +58,19 @@ func SendRegisterMessage(natsClient yagnats.NATSConn, msgList []RegisterMessage)
 
 }
 
-func RouterStartSubscribe(natsClient yagnats.NATSConn, msgList []RegisterMessage) error {
+func RouterStartSubscribe(natsClient yagnats.NATSClient, msgList []RegisterMessage) error {
 	//We need to respond to router.start
-	_, err := natsClient.Subscribe("router.start", func(m *nats.Msg) {
+	_, err := natsClient.Subscribe("router.start", func(mgs *yagnats.Message) {
 		SendRegisterMessage(natsClient, msgList)
 
 	})
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 
 }
 
-func SendGreetingMessage(natsClient yagnats.NATSConn, replyUUID *uuid.UUID) error {
+func SendGreetingMessage(natsClient yagnats.NATSClient, replyUUID *uuid.UUID) error {
 	//send first greeting
-	err := natsClient.PublishRequest(greetingTopic, replyUUID.String(), []byte{})
-	if err != nil {
-		return err
-	}
-	return nil
+	err := natsClient.Publish(greetingTopic, []byte{})
+	return err
 
 }

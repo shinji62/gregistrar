@@ -6,12 +6,12 @@ import (
 )
 
 //Return list of Local IP
-func LocalsIP() ([]string, error) {
+func LocalsIP(ipRegexp string) ([]string, error) {
 
 	addrs, err := net.InterfaceAddrs()
 
 	//Removing localIp
-	r, _ := regexp.CompilePOSIX("^(1|0)27\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$")
+	r, _ := regexp.CompilePOSIX(ipRegexp)
 
 	if err != nil {
 		return nil, err
