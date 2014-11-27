@@ -39,10 +39,10 @@ func main() {
 
 	natsClient, err := mbus.NewMessageBusConnection(c)
 	if err != nil {
-		fmt.Print("Error connecting to Nats")
+		fmt.Printf("Error connecting to Nats %s", err)
 		os.Exit(1)
 	}
-	defer natsClient.Close()
+	defer natsClient.Disconnect()
 
 	//Get localIp
 	ipList, err := helpers.LocalsIP(c.IpRegexp)
@@ -74,6 +74,8 @@ func main() {
 
 	signal.Notify(signals, syscall.SIGTERM, syscall.SIGINT)
 
+	fmt.Print("gregistrar.started")
+
 	err = mbus.SendGreetingMessage(natsClient, replyUUID)
 	if err != nil {
 		fmt.Printf("Could not send Greetings: %s", err)
@@ -95,7 +97,7 @@ func main() {
 
 	go func() {
 		for t := range ticker.C {
-			fmt.Println("Ticker %s", t)
+			fmt.Printf("Ticker %s", t)
 			errChan <- mbus.SendRegisterMessage(natsClient, payloadList)
 		}
 	}()

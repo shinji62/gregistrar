@@ -47,8 +47,8 @@ func SendRegisterMessage(natsClient yagnats.NATSClient, msgList []RegisterMessag
 		}
 
 		errNats := natsClient.Publish(registerTopic, encodeMessage)
-		fmt.Printf("Error %s", errNats)
 		if errNats != nil {
+			fmt.Printf("Error %s", errNats)
 			return errNats
 		}
 

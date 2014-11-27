@@ -10,7 +10,7 @@ import (
 	. "github.com/onsi/gomega/gexec"
 
 	"github.com/shinji62/gregistrar/config"
-	"github.com/shinji62/gregistrar/mbus"
+	//"github.com/shinji62/gregistrar/mbus"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -35,13 +35,13 @@ var _ = Describe("Nats Registration", func() {
 		natsRunner.Start()
 	})
 
-	createConfig := func(cfgFile string) *config.Config {
+	createConfig := func(cfgFile string) {
 
 		c := config.DefaultConfig()
 
 		c.Nats = []config.NatsConfig{
 			config.NatsConfig{
-				Host: "localhost",
+				Host: "0.0.0.0",
 				Port: natsPort,
 				User: "",
 				Pass: "",
@@ -61,14 +61,14 @@ var _ = Describe("Nats Registration", func() {
 		Ω(err).ShouldNot(HaveOccurred())
 
 		ioutil.WriteFile(cfgFile, cfgBytes, os.ModePerm)
-		return c
+		//return c
 	}
 
 	startGregistrar := func(cfgFile string) *Session {
 		gregistrarCmd := exec.Command(GregistarPath, "-c", cfgFile)
 		session, err := Start(gregistrarCmd, GinkgoWriter, GinkgoWriter)
 		Ω(err).ShouldNot(HaveOccurred())
-		Eventually(session, 5).Should(Say("gorouter.started"))
+		Eventually(session, 5).Should(Say("gregistrar.started"))
 		gregistrarSession = session
 
 		return session
@@ -93,11 +93,10 @@ var _ = Describe("Nats Registration", func() {
 	})
 
 	Describe("NatsMessageTest", func() {
-
-		c := createConfig("test.yml")
-		gregistrar := startGregistrar("test.yml")
-
-		natsClient, err := mbus.NewMessageBusConnection(c)
+		It("should connect to nats without error", func() {
+			createConfig("test.yml")
+			startGregistrar("test.yml")
+		})
 
 	})
 
