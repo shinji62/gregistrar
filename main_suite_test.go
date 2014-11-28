@@ -16,7 +16,7 @@ func TestGregistrar(t *testing.T) {
 }
 
 var _ = BeforeSuite(func() {
-	path, err := gexec.Build("github.com/cloudfoundry/gregistrar", "-race")
+	path, err := gexec.Build("github.com/shinji62/gregistrar", "-race")
 	Ω(err).ShouldNot(HaveOccurred())
 	GregistarPath = path
 })
