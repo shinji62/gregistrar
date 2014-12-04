@@ -1,0 +1,58 @@
+{
+	"ImportPath": "github.com/shinji62/gregistrar",
+	"GoVersion": "go1.3.1",
+	"Deps": [
+		{
+			"ImportPath": "github.com/apcera/nats",
+			"Comment": "v1.0.1-6-gfefc404",
+			"Rev": "fefc40442cc2ffaf016fc5cb59adbe23ef343115"
+		},
+		{
+			"ImportPath": "github.com/cloudfoundry-incubator/candiedyaml",
+			"Rev": "150e4e8f749b21a7f0de8e3cfd885143fcea6b32"
+		},
+		{
+			"ImportPath": "github.com/cloudfoundry/gorouter/common",
+			"Rev": "45ca951297933255fbe808dcf39efd03e4faec8a"
+		},
+		{
+			"ImportPath": "github.com/cloudfoundry/gorouter/config",
+			"Rev": "45ca951297933255fbe808dcf39efd03e4faec8a"
+		},
+		{
+			"ImportPath": "github.com/cloudfoundry/gorouter/test_util",
+			"Rev": "45ca951297933255fbe808dcf39efd03e4faec8a"
+		},
+		{
+			"ImportPath": "github.com/cloudfoundry/gosteno",
+			"Comment": "scotty_09012012-41-g5c1406e",
+			"Rev": "5c1406e9ea0ab919f92e1b194169565def41147b"
+		},
+		{
+			"ImportPath": "github.com/cloudfoundry/gunk/natsrunner",
+			"Rev": "de79b69f590594db2b9771018784c55251d5e7e7"
+		},
+		{
+			"ImportPath": "github.com/cloudfoundry/yagnats",
+			"Rev": "9b1fa814f3178924914d3d10708c0c775b5cbe4e"
+		},
+		{
+			"ImportPath": "github.com/fraenkel/candiedyaml",
+			"Rev": "84842532f8194fe186b48a009251dfaec9924ccd"
+		},
+		{
+			"ImportPath": "github.com/nu7hatch/gouuid",
+			"Rev": "179d4d0c4d8d407a32af483c2354df1d2c91e6c3"
+		},
+		{
+			"ImportPath": "github.com/onsi/ginkgo",
+			"Comment": "v1.1.0-24-g7891f86",
+			"Rev": "7891f8646dc62f4e32642ba332bbe7cf0097d8c5"
+		},
+		{
+			"ImportPath": "github.com/onsi/gomega",
+			"Comment": "v1.0-23-g2cd6d99",
+			"Rev": "2cd6d99ccf3ac7ae8398d8296429161bf7061ae2"
+		}
+	]
+}
